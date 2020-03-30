@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -104,6 +105,10 @@ func (c *Config) Bool() (bool, error) {
 		return v, nil
 	}
 
+	if v, e := strconv.ParseBool(c.StringOrElse("")); e == nil {
+		return v, nil
+	}
+
 	return false, errors.New(fmt.Sprintf("config: %T to bool not supported", c.node))
 }
 
@@ -113,6 +118,10 @@ func (c *Config) BoolOrElse(value bool) bool {
 	}
 
 	if v, ok := c.node.(bool); ok {
+		return v
+	}
+
+	if v, e := strconv.ParseBool(c.StringOrElse("")); e == nil {
 		return v
 	}
 
@@ -128,6 +137,10 @@ func (c *Config) Int() (int, error) {
 		return v, nil
 	}
 
+	if v, e := strconv.Atoi(c.StringOrElse("")); e == nil {
+		return v, nil
+	}
+
 	return 0, errors.New(fmt.Sprintf("config: %T to int not supported", c.node))
 }
 
@@ -137,6 +150,10 @@ func (c *Config) IntOrElse(value int) int {
 	}
 
 	if v, ok := c.node.(int); ok {
+		return v
+	}
+
+	if v, e := strconv.Atoi(c.StringOrElse("")); e == nil {
 		return v
 	}
 
@@ -152,6 +169,10 @@ func (c *Config) Uint() (uint, error) {
 		return v, nil
 	}
 
+	if v, e := strconv.ParseInt(c.StringOrElse(""), 10, 0); e == nil {
+		return uint(v), nil
+	}
+
 	return 0, errors.New(fmt.Sprintf("config: %T to uint not supported", c.node))
 }
 
@@ -162,6 +183,10 @@ func (c *Config) UintOrElse(value uint) uint {
 
 	if v, ok := c.node.(uint); ok {
 		return v
+	}
+
+	if v, e := strconv.ParseInt(c.StringOrElse(""), 10, 0); e == nil {
+		return uint(v)
 	}
 
 	return value
@@ -176,6 +201,10 @@ func (c *Config) Float32() (float32, error) {
 		return v, nil
 	}
 
+	if v, e := strconv.ParseFloat(c.StringOrElse(""), 32); e == nil {
+		return float32(v), nil
+	}
+
 	return 0, errors.New(fmt.Sprintf("config: %T to float32 not supported", c.node))
 }
 
@@ -186,6 +215,10 @@ func (c *Config) Float32OrElse(value float32) float32 {
 
 	if v, ok := c.node.(float32); ok {
 		return v
+	}
+
+	if v, e := strconv.ParseFloat(c.StringOrElse(""), 32); e == nil {
+		return float32(v)
 	}
 
 	return value
@@ -200,6 +233,10 @@ func (c *Config) Float64() (float64, error) {
 		return v, nil
 	}
 
+	if v, e := strconv.ParseFloat(c.StringOrElse(""), 64); e == nil {
+		return v, nil
+	}
+
 	return 0, errors.New(fmt.Sprintf("config: %T to float64 not supported", c.node))
 }
 
@@ -209,6 +246,10 @@ func (c *Config) Float64OrElse(value float64) float64 {
 	}
 
 	if v, ok := c.node.(float64); ok {
+		return v
+	}
+
+	if v, e := strconv.ParseFloat(c.StringOrElse(""), 64); e == nil {
 		return v
 	}
 
