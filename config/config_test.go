@@ -91,8 +91,8 @@ func TestConfig_Get(t *testing.T) {
 		t.FailNow()
 	}
 
-	if e != ErrorNotFoundOrNullValue {
-		t.Errorf("error != ErrorNotFoundOrNullValue")
+	if e != ErrNotFoundOrNullValue {
+		t.Errorf("error != ErrNotFoundOrNullValue")
 	}
 }
 
@@ -131,8 +131,8 @@ func TestConfig_Get3(t *testing.T) {
 		t.FailNow()
 	}
 
-	if e != ErrorNotFoundOrNullValue {
-		t.Errorf("error != ErrorNotFoundOrNullValue")
+	if e != ErrNotFoundOrNullValue {
+		t.Errorf("error != ErrNotFoundOrNullValue")
 	}
 }
 
@@ -168,8 +168,8 @@ func TestConfig_Get5(t *testing.T) {
 		t.FailNow()
 	}
 
-	if e != ErrorNotFoundOrNullValue {
-		t.Errorf("error != ErrorNotFoundOrNullValue")
+	if e != ErrNotFoundOrNullValue {
+		t.Errorf("error != ErrNotFoundOrNullValue")
 	}
 }
 
@@ -204,8 +204,8 @@ func TestConfig_Get7(t *testing.T) {
 		t.FailNow()
 	}
 
-	if e != ErrorNotFoundOrNullValue {
-		t.Errorf("error != ErrorNotFoundOrNullValue")
+	if e != ErrNotFoundOrNullValue {
+		t.Errorf("error != ErrNotFoundOrNullValue")
 	}
 }
 

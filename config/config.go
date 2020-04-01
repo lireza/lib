@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var ErrorNotFoundOrNullValue = errors.New("config: key not found or null value")
+var ErrNotFoundOrNullValue = errors.New("config: key not found or null value")
 
 type Config struct {
 	content map[string]interface{}
@@ -74,7 +74,7 @@ func (c *Config) Get(key string) *Config {
 
 func (c *Config) String() (string, error) {
 	if c.node == nil {
-		return "", ErrorNotFoundOrNullValue
+		return "", ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(string); ok {
@@ -98,7 +98,7 @@ func (c *Config) StringOrElse(value string) string {
 
 func (c *Config) Bool() (bool, error) {
 	if c.node == nil {
-		return false, ErrorNotFoundOrNullValue
+		return false, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(bool); ok {
@@ -130,7 +130,7 @@ func (c *Config) BoolOrElse(value bool) bool {
 
 func (c *Config) Int() (int, error) {
 	if c.node == nil {
-		return 0, ErrorNotFoundOrNullValue
+		return 0, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(int); ok {
@@ -162,7 +162,7 @@ func (c *Config) IntOrElse(value int) int {
 
 func (c *Config) Uint() (uint, error) {
 	if c.node == nil {
-		return 0, ErrorNotFoundOrNullValue
+		return 0, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(uint); ok {
@@ -194,7 +194,7 @@ func (c *Config) UintOrElse(value uint) uint {
 
 func (c *Config) Float32() (float32, error) {
 	if c.node == nil {
-		return 0, ErrorNotFoundOrNullValue
+		return 0, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(float32); ok {
@@ -226,7 +226,7 @@ func (c *Config) Float32OrElse(value float32) float32 {
 
 func (c *Config) Float64() (float64, error) {
 	if c.node == nil {
-		return 0, ErrorNotFoundOrNullValue
+		return 0, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.(float64); ok {
@@ -276,7 +276,7 @@ func (c *Config) DurationOrElse(value time.Duration) time.Duration {
 
 func (c *Config) SliceOfString() ([]string, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]string); ok {
@@ -300,7 +300,7 @@ func (c *Config) SliceOfStringOrElse(value []string) []string {
 
 func (c *Config) SliceOfBool() ([]bool, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]bool); ok {
@@ -324,7 +324,7 @@ func (c *Config) SliceOfBoolOrElse(value []bool) []bool {
 
 func (c *Config) SliceOfInt() ([]int, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]int); ok {
@@ -348,7 +348,7 @@ func (c *Config) SliceOfIntOrElse(value []int) []int {
 
 func (c *Config) SliceOfUint() ([]uint, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]uint); ok {
@@ -372,7 +372,7 @@ func (c *Config) SliceOfUintOrElse(value []uint) []uint {
 
 func (c *Config) SliceOfFloat32() ([]float32, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]float32); ok {
@@ -396,7 +396,7 @@ func (c *Config) SliceOfFloat32OrElse(value []float32) []float32 {
 
 func (c *Config) SliceOfFloat64() ([]float64, error) {
 	if c.node == nil {
-		return nil, ErrorNotFoundOrNullValue
+		return nil, ErrNotFoundOrNullValue
 	}
 
 	if v, ok := c.node.([]float64); ok {
