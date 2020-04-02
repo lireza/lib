@@ -16,7 +16,7 @@ func main() {
 	wg.Add(5_000)
 
 	start := time.Now()
-	// 5000 tasks to executor service. Each have 5 milliseconds of blocking code.
+	// 5000 tasks to executor. Each have 5 milliseconds of blocking code.
 	for i := 1; i <= 5_000; i++ {
 		t := concurrent.NewTask(func(i interface{}, c chan<- interface{}) {
 			time.Sleep(5 * time.Millisecond)
@@ -28,6 +28,6 @@ func main() {
 
 	wg.Wait()
 	ex.Shutdown()
-	// 900.447083ms ms on my laptop.
+	// 900.447083ms on my laptop.
 	fmt.Println(time.Now().Sub(start))
 }
