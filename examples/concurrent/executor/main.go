@@ -21,6 +21,7 @@ func main() {
 		c, _ := concurrent.NewCallable(func(e chan<- error) {
 			time.Sleep(5 * time.Millisecond)
 			wg.Done()
+			e <- nil
 		})
 
 		ex.Execute(c)
