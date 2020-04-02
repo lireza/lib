@@ -11,7 +11,7 @@ import (
 	"github.com/lireza/lib/concurrent"
 )
 
-// Executor is the thread pool abstraction.
+// Executor is a thread pool abstraction.
 type Executor interface {
 	// Execute executes the runner instance passed to method.
 	// Whether or not the runner will be called on new thread depends on implementation.
@@ -20,6 +20,9 @@ type Executor interface {
 	// Shutdown shutdowns the executor and waits on threads to complete their tasks
 	// passed to threads before the shutdown signal.
 	Shutdown()
+
+	// AwaitTermination waits until the executor is shutdown so blocks the calling goroutine.
+	AwaitTermination()
 }
 
 // RoundRobinExecutor is an executor implementation that contains some threads,
@@ -91,6 +94,8 @@ func (e *RoundRobinExecutor) Shutdown() {
 	for _, c := range e.shutdown {
 		c <- struct{}{}
 	}
+}
 
+func (e *RoundRobinExecutor) AwaitTermination() {
 	e.wg.Wait()
 }

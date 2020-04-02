@@ -13,7 +13,7 @@ func main() {
 	// Creating a new round robin executor. It distributes tasks in round robin fashion to threads.
 	ex, _ := executor.NewRoundRobinExecutor(32, 500)
 	wg := &sync.WaitGroup{}
-	wg.Add(5_000)
+	wg.Add(10_000)
 
 	start := time.Now()
 	// 5000 callable to executor. Each have 5 milliseconds of blocking code.
@@ -27,8 +27,19 @@ func main() {
 		ex.Execute(c)
 	}
 
+	// 5000 function to executor. Each have 5 milliseconds of blocking code.
+	for i := 1; i <= 5_000; i++ {
+		c, _ := concurrent.NewFunction(func(arg interface{}, r chan<- interface{}) {
+			time.Sleep(5 * time.Millisecond)
+			arg.(*sync.WaitGroup).Done()
+		}, wg)
+
+		ex.Execute(c)
+	}
+
 	wg.Wait()
 	ex.Shutdown()
+	ex.AwaitTermination()
 
 	fmt.Println(time.Now().Sub(start))
 }
