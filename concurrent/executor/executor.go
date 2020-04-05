@@ -17,16 +17,15 @@ type Executor interface {
 	// Whether or not the runner will be called on new thread depends on implementation.
 	Execute(runner concurrent.Runner)
 
-	// Shutdown shutdowns the executor and waits on threads to complete their tasks
-	// passed to threads before the shutdown signal.
+	// Shutdown shutdowns the executor.
 	Shutdown()
 
-	// AwaitTermination waits until the executor is shutdown so blocks the calling goroutine.
+	// AwaitTermination waits until the executor is shutdown, so blocks the calling goroutine.
 	AwaitTermination()
 }
 
 // RoundRobinExecutor is an executor implementation that contains some threads,
-// and passes tasks to threads in a round robin fashion.
+// and passes runners to threads in a round robin fashion.
 type RoundRobinExecutor struct {
 	mutex    *sync.Mutex
 	ids      *ring.Ring
@@ -78,6 +77,8 @@ func NewRoundRobinExecutor(nThreads, threadQueueSize int) (*RoundRobinExecutor, 
 	return &RoundRobinExecutor{mutex: &sync.Mutex{}, ids: ids, channels: channels, shutdown: shutdown, wg: wg}, nil
 }
 
+// Execute sends a runner instance to a specific thread for execution.
+// Runner instances should provide a mechanism to determine whether a runner passed to executor executed successfully or not.
 func (e *RoundRobinExecutor) Execute(runner concurrent.Runner) {
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
@@ -87,6 +88,7 @@ func (e *RoundRobinExecutor) Execute(runner concurrent.Runner) {
 	e.ids = e.ids.Next()
 }
 
+// Shutdown sends shutdown signal to all threads to stop execution.
 func (e *RoundRobinExecutor) Shutdown() {
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
@@ -96,6 +98,7 @@ func (e *RoundRobinExecutor) Shutdown() {
 	}
 }
 
+// AwaitTermination awaits on executor threads to stop execution.
 func (e *RoundRobinExecutor) AwaitTermination() {
 	e.wg.Wait()
 }

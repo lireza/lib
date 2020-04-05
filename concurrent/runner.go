@@ -4,7 +4,7 @@ package concurrent
 // Runner is an abstraction for an execution that can be start with calling run method.
 // Runners can be passed to goroutines, so should be concurrent safe.
 type Runner interface {
-	// Run will be called on runner instances to start the task defined.
+	// Run will be called on runner instances to start the job defined.
 	Run()
 }
 
@@ -16,6 +16,7 @@ type Task struct {
 	r   chan<- interface{}
 }
 
+// Run starts task's function to do its job.
 func (t *Task) Run() {
 	t.do(t.arg, t.r)
 }

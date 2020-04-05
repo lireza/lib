@@ -20,6 +20,7 @@ const (
 	ERROR
 )
 
+// String representation of log level that is used as prefix in log messages.
 func (l level) String() string {
 	return [5]string{"[ TRACE ] ", "[ DEBUG ] ", "[ INFO  ] ", "[ WARN  ] ", "[ ERROR ] "}[l]
 }
