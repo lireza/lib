@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lireza/lib/config"
+	"github.com/lireza/lib/configuring"
 	"github.com/lireza/lib/logging"
 )
 
@@ -9,7 +9,7 @@ func main() {
 	logger := logging.NewLogger(logging.INFO)
 
 	// Lets suppose we want to load logger.level and db.postgres.user configuration values.
-	configs := config.New()
+	configs := configuring.New()
 
 	// Here if LOGGER_LEVEL is defined as environment variable, config tries to load its value;
 	// If not, and if logger_level is defined as command line argument, config tries to load its value;
@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Config instances can be used to load configuration from a JSON file.
-	configs, e = config.New().LoadJSON("config.json")
+	configs, e = configuring.New().LoadJSON("config.json")
 	if e != nil {
 		logger.Error(e.Error())
 	} else {

@@ -1,4 +1,4 @@
-package config
+package configuring
 
 import (
 	"flag"
@@ -22,7 +22,7 @@ func TestNew(t *testing.T) {
 func TestConfig_LoadJSON(t *testing.T) {
 	config := New()
 
-	config, e := config.LoadJSON("config.json")
+	config, e := config.LoadJSON("configuring.json")
 	if e == nil {
 		t.Errorf("error == nil")
 	}
@@ -224,8 +224,8 @@ func TestConfig_Get8(t *testing.T) {
 		t.Errorf("schema != false")
 	}
 
-	if e.Error() != "config: string to bool not supported" {
-		t.Errorf("error != config: string to bool not supported")
+	if e.Error() != "configuring: string to bool not supported" {
+		t.Errorf("error != configuring: string to bool not supported")
 	}
 }
 
