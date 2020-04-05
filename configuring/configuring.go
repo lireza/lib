@@ -60,15 +60,16 @@ func (c *Config) LoadJSON(filename string) (*Config, error) {
 	return c, nil
 }
 
+// Get returns back a config instance that may be filled with an appropriate node instance.
+// The accessor methods can be used to convert the node to a specific type.
 func (c *Config) Get(key string) *Config {
 	if v, exists := os.LookupEnv(asEnv(key)); exists {
 		return &Config{content: c.content, node: v}
 	}
 
-	arg := asArg(key)
-	if f := flag.Lookup(arg); f != nil {
+	if f := flag.Lookup(asArg(key)); f != nil {
 		for _, element := range os.Args {
-			if element == "-"+arg || element == "--"+arg {
+			if element == "-"+asArg(key) || element == "--"+asArg(key) {
 				return &Config{content: c.content, node: f.Value.String()}
 			}
 		}
