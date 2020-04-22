@@ -313,8 +313,17 @@ func (c *Config) SliceOfString() ([]string, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]string); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		ss := make([]string, 0)
+		for _, v := range vs {
+			if s, ok := v.(string); ok {
+				ss = append(ss, s)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to string not supported", v))
+			}
+		}
+
+		return ss, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []string not supported", c.node))
@@ -326,11 +335,20 @@ func (c *Config) SliceOfStringOrElse(value []string) []string {
 		return value
 	}
 
-	if v, ok := c.node.([]string); ok {
-		return v
+	ss := make([]string, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if s, ok := v.(string); ok {
+				ss = append(ss, s)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return ss
 }
 
 // SliceOfBool returns the slice of boolean representation of a node if convertible.
@@ -339,8 +357,17 @@ func (c *Config) SliceOfBool() ([]bool, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]bool); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		bs := make([]bool, 0)
+		for _, v := range vs {
+			if b, ok := v.(bool); ok {
+				bs = append(bs, b)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to bool not supported", v))
+			}
+		}
+
+		return bs, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []bool not supported", c.node))
@@ -352,11 +379,20 @@ func (c *Config) SliceOfBoolOrElse(value []bool) []bool {
 		return value
 	}
 
-	if v, ok := c.node.([]bool); ok {
-		return v
+	bs := make([]bool, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if b, ok := v.(bool); ok {
+				bs = append(bs, b)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return bs
 }
 
 // SliceOfInt returns the slice of integer representation of a node if convertible.
@@ -365,8 +401,17 @@ func (c *Config) SliceOfInt() ([]int, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]int); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		is := make([]int, 0)
+		for _, v := range vs {
+			if i, ok := v.(int); ok {
+				is = append(is, i)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to int not supported", v))
+			}
+		}
+
+		return is, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []int not supported", c.node))
@@ -378,11 +423,20 @@ func (c *Config) SliceOfIntOrElse(value []int) []int {
 		return value
 	}
 
-	if v, ok := c.node.([]int); ok {
-		return v
+	is := make([]int, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if i, ok := v.(int); ok {
+				is = append(is, i)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return is
 }
 
 // SliceOfUint returns the slice of unsigned integer representation of a node if convertible.
@@ -391,8 +445,17 @@ func (c *Config) SliceOfUint() ([]uint, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]uint); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		uis := make([]uint, 0)
+		for _, v := range vs {
+			if ui, ok := v.(uint); ok {
+				uis = append(uis, ui)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to uint not supported", v))
+			}
+		}
+
+		return uis, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []uint not supported", c.node))
@@ -404,11 +467,20 @@ func (c *Config) SliceOfUintOrElse(value []uint) []uint {
 		return value
 	}
 
-	if v, ok := c.node.([]uint); ok {
-		return v
+	uis := make([]uint, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if ui, ok := v.(uint); ok {
+				uis = append(uis, ui)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return uis
 }
 
 // SliceOfFloat32 returns the slice of floating point representation of a node if convertible.
@@ -417,8 +489,17 @@ func (c *Config) SliceOfFloat32() ([]float32, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]float32); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		fs := make([]float32, 0)
+		for _, v := range vs {
+			if f, ok := v.(float32); ok {
+				fs = append(fs, f)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to float32 not supported", v))
+			}
+		}
+
+		return fs, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []float32 not supported", c.node))
@@ -430,11 +511,20 @@ func (c *Config) SliceOfFloat32OrElse(value []float32) []float32 {
 		return value
 	}
 
-	if v, ok := c.node.([]float32); ok {
-		return v
+	fs := make([]float32, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if f, ok := v.(float32); ok {
+				fs = append(fs, f)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return fs
 }
 
 // SliceOfFloat64 returns the slice of floating point representation of a node if convertible.
@@ -443,8 +533,17 @@ func (c *Config) SliceOfFloat64() ([]float64, error) {
 		return nil, ErrNotFoundOrNullValue
 	}
 
-	if v, ok := c.node.([]float64); ok {
-		return v, nil
+	if vs, ok := c.node.([]interface{}); ok {
+		fs := make([]float64, 0)
+		for _, v := range vs {
+			if f, ok := v.(float64); ok {
+				fs = append(fs, f)
+			} else {
+				return nil, errors.New(fmt.Sprintf("configuring: %T to float64 not supported", v))
+			}
+		}
+
+		return fs, nil
 	}
 
 	return nil, errors.New(fmt.Sprintf("configuring: %T to []float64 not supported", c.node))
@@ -456,11 +555,20 @@ func (c *Config) SliceOfFloat64OrElse(value []float64) []float64 {
 		return value
 	}
 
-	if v, ok := c.node.([]float64); ok {
-		return v
+	fs := make([]float64, 0)
+	if vs, ok := c.node.([]interface{}); ok {
+		for _, v := range vs {
+			if f, ok := v.(float64); ok {
+				fs = append(fs, f)
+			} else {
+				return value
+			}
+		}
+	} else {
+		return value
 	}
 
-	return value
+	return fs
 }
 
 // asEnv converts a key to an appropriate environment variable format.
