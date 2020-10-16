@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -27,6 +28,7 @@ import (
 
 // ErrNotFoundOrNullValue determines a provided key not found, or the value is null.
 var ErrNotFoundOrNullValue = errors.New("configuring: key not found or null value")
+var ErrInvalidFileExtension = errors.New("valid extensions are: yml,yaml and json")
 
 // Config encapsulates the configuration loading mechanism.
 type Config struct {
@@ -40,19 +42,43 @@ func New() *Config {
 	return &Config{content: make(map[string]interface{})}
 }
 
-// LoadJSON loads JSON configuration file to the current instance and returns the instance itself.
-// The returned instance can be used to load environment variables and loaded JSON configuration file.
-func (c *Config) LoadJSON(filename string) (*Config, error) {
+// LoadConfigFile loads configuration file to the current instance and returns the instance itself.
+// The returned instance can be used to load environment variables and loaded JSON/YML configuration file.
+func (c *Config) LoadConfigFile(filename string) (*Config, error) {
 	file, e := ioutil.ReadFile(filename)
 	if e != nil {
 		return nil, e
 	}
-
-	if e := json.Unmarshal(file, &c.content); e != nil {
-		return nil, e
+	ext := filepath.Ext(filename)
+	if ext == ".yml" || ext == ".yaml" {
+		e = c.loadYML(file)
+		if e != nil {
+			return nil, e
+		}
+	} else if ext == ".json" {
+		e = c.loadJSON(file)
+		if e != nil {
+			return nil, e
+		}
+	} else {
+		return nil, ErrInvalidFileExtension
 	}
 
 	return c, nil
+}
+
+func (c *Config) loadYML(file []byte) error {
+	if e := yaml.Unmarshal(file, &c.content); e != nil {
+		return e
+	}
+	return nil
+}
+
+func (c *Config) loadJSON(file []byte) error {
+	if e := json.Unmarshal(file, &c.content); e != nil {
+		return e
+	}
+	return nil
 }
 
 // Get returns back a config instance that may be filled with an appropriate node instance.
